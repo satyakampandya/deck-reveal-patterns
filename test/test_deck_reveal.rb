@@ -138,6 +138,17 @@ class DeckRevealTest < Minitest::Test
     assert_equal expected_deck, deck
   end
 
+  def test_incremental_draw_pattern_reveals_cards_in_order
+    desired_order = DeckReveal::DEFAULT_DESIRED_ORDER
+
+    pattern = incremental_draw_pattern(desired_order.length)
+
+    deck = DeckReveal.arrange_deck(pattern)
+    revealed = simulate(deck, pattern)
+
+    assert_equal desired_order, revealed
+  end
+
   private
 
   # rubocop:disable Metrics/MethodLength
@@ -160,6 +171,12 @@ class DeckRevealTest < Minitest::Test
   end
 
   # rubocop:enable Metrics/MethodLength
+
+  def incremental_draw_pattern(size)
+    (1..size).flat_map do |i|
+      Array.new(i, 1) + [0]
+    end
+  end
 
   # Forward simulator used only for validation in tests
   def simulate(deck, pattern)
