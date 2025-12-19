@@ -15,6 +15,18 @@ class ArrangeDeckTest < Minitest::Test
     assert_equal desired_order, revealed
   end
 
+  def test_pattern_with_incorrect_number_of_reveals_raises_error
+    desired_order = %w[A 2 3]
+    pattern = [1, 0, 1, 0] # only 2 reveals, but 3 cards expected
+
+    error = assert_raises(ArgumentError) do
+      arrange_deck(pattern, desired_order)
+    end
+
+    assert_match(/reveal/i, error.message)
+    assert_match(/got\s+2/i, error.message)
+  end
+
   private
 
   # Forward simulator used only for validation in tests
