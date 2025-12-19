@@ -9,7 +9,7 @@ class ArrangeDeckTest < Minitest::Test
     desired_order = %w[A 2 3]
     pattern = [1, 0, 1, 0, 1, 0]
 
-    deck = arrange_deck(pattern, desired_order)
+    deck = DeckReveal.arrange_deck(pattern, desired_order)
     revealed = simulate(deck, pattern)
 
     assert_equal desired_order, revealed
@@ -20,7 +20,7 @@ class ArrangeDeckTest < Minitest::Test
     pattern = [1, 0, 1, 0] # only 2 reveals, but 3 cards expected
 
     error = assert_raises(ArgumentError) do
-      arrange_deck(pattern, desired_order)
+      DeckReveal.arrange_deck(pattern, desired_order)
     end
 
     assert_match(/reveal/i, error.message)
@@ -32,7 +32,7 @@ class ArrangeDeckTest < Minitest::Test
     pattern = [1, 0, 1, 0, 1, 0]
 
     error = assert_raises(ArgumentError) do
-      arrange_deck(pattern, desired_order)
+      DeckReveal.arrange_deck(pattern, desired_order)
     end
 
     assert_match(/desired_order must be an array of strings/i, error.message)
@@ -43,7 +43,7 @@ class ArrangeDeckTest < Minitest::Test
     pattern = [1, 0, 2, 0, 1, 0] # invalid action: 2
 
     error = assert_raises(ArgumentError) do
-      arrange_deck(pattern, desired_order)
+      DeckReveal.arrange_deck(pattern, desired_order)
     end
 
     assert_match(/pattern contains invalid action/i, error.message)
@@ -53,7 +53,7 @@ class ArrangeDeckTest < Minitest::Test
     desired_order = %w[A 2 3]
 
     error = assert_raises(ArgumentError) do
-      arrange_deck(nil, desired_order)
+      DeckReveal.arrange_deck(nil, desired_order)
     end
 
     assert_match(/pattern must be provided/i, error.message)
@@ -63,7 +63,7 @@ class ArrangeDeckTest < Minitest::Test
     pattern = [1, 0, 1, 0, 1, 0]
 
     error = assert_raises(ArgumentError) do
-      arrange_deck(pattern, nil)
+      DeckReveal.arrange_deck(pattern, nil)
     end
 
     assert_match(/desired_order must be provided/i, error.message)
