@@ -11,6 +11,7 @@ module DeckReveal
       revealed = []
 
       print_initial_deck(deck)
+      print_table_header
 
       pattern.each_with_index do |action, index|
         apply_simulation_action(deck, revealed, action, index)
@@ -59,23 +60,38 @@ module DeckReveal
     def print_initial_deck(deck)
       puts 'Initial deck:'
       puts deck.join(', ')
-      puts '-' * 86
+      puts '-' * 100
+    end
+
+    def print_table_header
+      puts format(
+        '%<step>s | %<action>s | %<card>s | %<deck>s',
+        step: format('%3s', 'No'),
+        action: format('%-8s', 'Action'),
+        card: format('%-3s', 'Card'),
+        deck: 'Deck Positions'
+      )
+      puts '-' * 100
     end
 
     def print_revealed_cards(revealed)
-      puts '-' * 60
+      puts '-' * 100
       puts 'Revealed cards:'
       puts revealed.join(', ')
     end
 
     def print_step(index:, action:, card:, deck:)
       puts format(
-        'Step %<step>s | Action: %<action>s | Card: %<card>s | Deck: %<deck>s',
+        '%<step>s | %<action>s | %<card>s | %<deck>s',
         step: format('%3d', index + 1),
         action: format('%-8s', action),
-        card: format('%-3s', card),
-        deck: deck.join(', ')
+        card: format('%-4s', card),
+        deck: format_deck(deck)
       )
+    end
+
+    def format_deck(deck)
+      deck.map { |card| card.rjust(2) }.join(' | ')
     end
   end
 end
