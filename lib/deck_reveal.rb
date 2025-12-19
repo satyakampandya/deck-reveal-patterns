@@ -48,6 +48,9 @@ module DeckReveal
   def validate_presence!(pattern, desired_order)
     raise ArgumentError, 'pattern must be provided' if pattern.nil?
     raise ArgumentError, 'desired_order must be provided' if desired_order.nil?
+
+    raise ArgumentError, 'pattern must not be empty' if pattern.empty?
+    raise ArgumentError, 'desired_order must not be empty' if desired_order.empty?
   end
 
   def validate_desired_order!(desired_order)
