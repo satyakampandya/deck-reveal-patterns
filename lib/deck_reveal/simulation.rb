@@ -58,8 +58,9 @@ module DeckReveal
     end
 
     def print_initial_deck(deck)
-      puts 'Initial deck:'
-      puts deck.join(', ')
+      puts '-' * 100
+      puts 'Deck arrangement:'
+      puts deck.join(' | ')
       puts '-' * 100
     end
 
@@ -77,7 +78,7 @@ module DeckReveal
     def print_revealed_cards(revealed)
       puts '-' * 100
       puts 'Revealed cards:'
-      puts revealed.join(', ')
+      puts revealed.join(' | ')
     end
 
     def print_step(index:, action:, card:, deck:)

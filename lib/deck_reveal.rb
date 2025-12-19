@@ -40,9 +40,19 @@ module DeckReveal
     return if deck.empty?
 
     deck.unshift(deck.pop)
+
+    instruction = 'Move bottom card to top'
+    puts "#{instruction.ljust(32)} ==> #{format_deck(deck)}"
   end
 
   def insert_revealed_card!(deck, card)
     deck.unshift(card)
+
+    instruction = "Place revealed card #{card} on top"
+    puts "#{instruction.ljust(32)} ==> #{format_deck(deck)}"
+  end
+
+  def format_deck(deck)
+    deck.map { |card| card.rjust(2) }.join(' | ')
   end
 end
