@@ -1,6 +1,14 @@
 # frozen_string_literal: true
 
 def arrange_deck(pattern, desired_order)
+  reveal_count = pattern.count(0)
+  expected_count = desired_order.length
+
+  if reveal_count != expected_count
+    raise ArgumentError,
+          "Pattern must contain exactly #{expected_count} reveal actions (0), got #{reveal_count}"
+  end
+
   deck = []
   reveal_index = desired_order.length - 1
 
