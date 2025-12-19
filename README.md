@@ -29,7 +29,7 @@ in exactly the desired order.
 The desired reveal order is a list of cards in the exact sequence they must be revealed.
 
 For a single suit:
-A, 2, 3, 4, 5, 6, 7, 8, 9, 10, J, Q, K
+`A, 2, 3, 4, 5, 6, 7, 8, 9, 10, J, Q, K`
 
 Ace is treated as `1`.  
 Each card must be revealed **once and only once**.
@@ -54,7 +54,7 @@ The pattern is executed **sequentially**, and each `0` action reveals exactly on
 ## Example: Simple Alternating Pattern
 
 Pattern:
-1, 0, 1, 0, 1, 0, ...
+`1, 0, 1, 0, 1, 0, ...`
 
 Interpretation:
 
@@ -69,6 +69,31 @@ If this pattern contains:
 
 then all 13 cards of a suit will eventually be revealed.
 
+---
+
+## Example: Spelling-Based Pattern
+
+Patterns do not need to be uniform.
+
+A pattern can be derived from the spelling of card values.
+For each card:
+1. Draw one card and place it at the bottom for each letter in the card’s spelling
+2. Reveal the next card
+
+For example:
+
+| Card | Spelling | Pattern     |
+|------|----------|-------------|
+| A    | ONE      | 1,1,1,0     |
+| 2    | TWO      | 1,1,1,0     |
+| 3    | THREE    | 1,1,1,1,1,0 |
+| 4    | FOUR     | 1,1,1,1,0   |
+
+This produces a pattern such as:
+`1,1,1,0, 1,1,1,0, 1,1,1,1,1,0, ...`
+
+Despite the non-uniform pattern, the algorithm should still reconstruct
+the correct initial deck arrangement using reverse simulation.
 ---
 
 ## Objective
