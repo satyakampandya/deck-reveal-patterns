@@ -116,10 +116,32 @@ class DeckRevealTest < Minitest::Test
     assert_equal DeckReveal::DEFAULT_DESIRED_ORDER, revealed
   end
 
+  def test_alternating_pattern_returns_expected_deck_order
+    pattern = [1, 0] * 13
+
+    deck = DeckReveal.arrange_deck(pattern)
+    expected_deck = %w[7 A Q 2 8 3 J 4 9 5 K 6 10]
+
+    assert_equal expected_deck, deck
+  end
+
+  def test_spelling_based_pattern_returns_expected_deck_order
+    spellings = card_spellings
+
+    pattern = spellings.values.flat_map do |word|
+      Array.new(word.length, 1) + [0]
+    end
+
+    deck = DeckReveal.arrange_deck(pattern)
+    expected_deck = %w[3 8 7 A Q 6 4 2 J K 10 9 5]
+
+    assert_equal expected_deck, deck
+  end
+
   private
 
   # rubocop:disable Metrics/MethodLength
-  def card_spellings(desired_order)
+  def card_spellings(desired_order = DeckReveal::DEFAULT_DESIRED_ORDER)
     {
       'A' => 'ONE',
       '2' => 'TWO',
