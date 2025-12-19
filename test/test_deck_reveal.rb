@@ -3,6 +3,7 @@
 require 'minitest/autorun'
 require_relative '../lib/deck_reveal'
 
+# rubocop:disable Metrics/ClassLength
 class DeckRevealTest < Minitest::Test
   # Applying the pattern to the arranged deck must reveal cards in the desired order.
   def test_alternating_pattern_reveals_cards_in_order
@@ -93,7 +94,42 @@ class DeckRevealTest < Minitest::Test
     assert_match(/empty/i, error.message)
   end
 
+  def test_spelling_based_pattern_reveals_cards_in_order
+    desired_order = %w[A 2 3 4 5 6 7 8 9 10 J Q K]
+    spellings = card_spellings(desired_order)
+
+    pattern = spellings.values.flat_map do |word|
+      Array.new(word.length, 1) + [0]
+    end
+
+    deck = DeckReveal.arrange_deck(pattern, desired_order)
+    revealed = simulate(deck, pattern)
+
+    assert_equal desired_order, revealed
+  end
+
   private
+
+  # rubocop:disable Metrics/MethodLength
+  def card_spellings(desired_order)
+    {
+      'A' => 'ONE',
+      '2' => 'TWO',
+      '3' => 'THREE',
+      '4' => 'FOUR',
+      '5' => 'FIVE',
+      '6' => 'SIX',
+      '7' => 'SEVEN',
+      '8' => 'EIGHT',
+      '9' => 'NINE',
+      '10' => 'TEN',
+      'J' => 'JACK',
+      'Q' => 'QUEEN',
+      'K' => 'KING'
+    }.slice(*desired_order)
+  end
+
+  # rubocop:enable Metrics/MethodLength
 
   # Forward simulator used only for validation in tests
   def simulate(deck, pattern)
@@ -111,3 +147,5 @@ class DeckRevealTest < Minitest::Test
     revealed
   end
 end
+
+# rubocop:enable Metrics/ClassLength
