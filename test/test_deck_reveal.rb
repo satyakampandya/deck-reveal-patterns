@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 require 'minitest/autorun'
-require_relative '../lib/arrange_deck'
+require_relative '../lib/deck_reveal'
 
-class ArrangeDeckTest < Minitest::Test
+class DeckRevealTest < Minitest::Test
   # Applying the pattern to the arranged deck must reveal cards in the desired order.
   def test_alternating_pattern_reveals_cards_in_order
     desired_order = %w[A 2 3]
