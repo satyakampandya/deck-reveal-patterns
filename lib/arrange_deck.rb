@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 def arrange_deck(pattern, desired_order)
+  raise ArgumentError, 'pattern must be provided' if pattern.nil?
+  raise ArgumentError, 'desired_order must be provided' if desired_order.nil?
+
   unless desired_order.is_a?(Array) && desired_order.all? { |c| c.is_a?(String) }
     raise ArgumentError, 'desired_order must be an array of strings'
   end
