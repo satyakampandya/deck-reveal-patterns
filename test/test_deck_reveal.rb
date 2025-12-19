@@ -69,6 +69,30 @@ class DeckRevealTest < Minitest::Test
     assert_match(/desired_order must be provided/i, error.message)
   end
 
+  def test_empty_pattern_raises_error
+    desired_order = %w[A 2 3]
+    pattern = []
+
+    error = assert_raises(ArgumentError) do
+      DeckReveal.arrange_deck(pattern, desired_order)
+    end
+
+    assert_match(/pattern/i, error.message)
+    assert_match(/empty/i, error.message)
+  end
+
+  def test_empty_desired_order_raises_error
+    desired_order = []
+    pattern = [1, 0, 1, 0, 1, 0]
+
+    error = assert_raises(ArgumentError) do
+      DeckReveal.arrange_deck(pattern, desired_order)
+    end
+
+    assert_match(/desired_order/i, error.message)
+    assert_match(/empty/i, error.message)
+  end
+
   private
 
   # Forward simulator used only for validation in tests
