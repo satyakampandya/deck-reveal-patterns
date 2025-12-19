@@ -49,6 +49,26 @@ class ArrangeDeckTest < Minitest::Test
     assert_match(/pattern contains invalid action/i, error.message)
   end
 
+  def test_missing_pattern_raises_error
+    desired_order = %w[A 2 3]
+
+    error = assert_raises(ArgumentError) do
+      arrange_deck(nil, desired_order)
+    end
+
+    assert_match(/pattern must be provided/i, error.message)
+  end
+
+  def test_missing_desired_order_raises_error
+    pattern = [1, 0, 1, 0, 1, 0]
+
+    error = assert_raises(ArgumentError) do
+      arrange_deck(pattern, nil)
+    end
+
+    assert_match(/desired_order must be provided/i, error.message)
+  end
+
   private
 
   # Forward simulator used only for validation in tests
