@@ -1,6 +1,15 @@
 # frozen_string_literal: true
 
 def arrange_deck(pattern, desired_order)
+  unless desired_order.is_a?(Array) && desired_order.all? { |c| c.is_a?(String) }
+    raise ArgumentError, 'desired_order must be an array of strings'
+  end
+
+  invalid_actions = pattern.reject { |a| [0, 1].include?(a) }
+  unless invalid_actions.empty?
+    raise ArgumentError, "pattern contains invalid action(s): #{invalid_actions.uniq.join(', ')}"
+  end
+
   reveal_count = pattern.count(0)
   expected_count = desired_order.length
 
