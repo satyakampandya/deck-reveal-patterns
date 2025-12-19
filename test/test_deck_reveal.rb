@@ -108,6 +108,14 @@ class DeckRevealTest < Minitest::Test
     assert_equal desired_order, revealed
   end
 
+  def test_uses_default_desired_order_when_not_provided
+    pattern = [1, 0] * 13
+    deck = DeckReveal.arrange_deck(pattern)
+
+    revealed = simulate(deck, pattern)
+    assert_equal DeckReveal::DEFAULT_DESIRED_ORDER, revealed
+  end
+
   private
 
   # rubocop:disable Metrics/MethodLength

@@ -5,7 +5,10 @@
 module DeckReveal
   extend self
 
-  def arrange_deck(pattern, desired_order)
+  # Default desired reveal order for a standard suit
+  DEFAULT_DESIRED_ORDER = %w[A 2 3 4 5 6 7 8 9 10 J Q K].freeze
+
+  def arrange_deck(pattern, desired_order = DEFAULT_DESIRED_ORDER)
     validate_inputs!(pattern, desired_order)
     build_deck(pattern, desired_order)
   end
