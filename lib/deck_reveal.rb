@@ -3,48 +3,72 @@
 # DeckReveal provides utilities for reconstructing the initial order of a deck
 # of cards based on a deterministic reveal pattern.
 module DeckReveal
-  module_function
+  extend self
 
   def arrange_deck(pattern, desired_order)
     validate_inputs!(pattern, desired_order)
+    build_deck(pattern, desired_order)
+  end
 
+  private
+
+  def build_deck(pattern, desired_order)
     deck = []
     reveal_index = desired_order.length - 1
 
     pattern.reverse.each do |action|
-      if action == 1
-        deck.unshift(deck.pop) unless deck.empty?
-      else
-        deck.unshift(desired_order[reveal_index])
-        reveal_index -= 1
-      end
+      apply_reverse_action!(deck, action, desired_order, reveal_index)
+      reveal_index -= 1 if action.zero?
     end
 
     deck
   end
 
-  def validate_inputs!(pattern, desired_order)
-    raise ArgumentError, 'pattern must be provided' if pattern.nil?
-    raise ArgumentError, 'desired_order must be provided' if desired_order.nil?
-
-    unless desired_order.is_a?(Array) && desired_order.all? { |c| c.is_a?(String) }
-      raise ArgumentError, 'desired_order must be an array of strings'
-    end
-
-    invalid_actions = pattern.reject { |a| [0, 1].include?(a) }
-    unless invalid_actions.empty?
-      raise ArgumentError,
-            "pattern contains invalid action(s): #{invalid_actions.uniq.join(', ')}"
-    end
-
-    reveal_count = pattern.count(0)
-    expected_count = desired_order.length
-
-    return unless reveal_count != expected_count
-
-    raise ArgumentError,
-          "pattern must contain exactly #{expected_count} reveal actions (0), got #{reveal_count}"
+  def apply_reverse_action!(deck, action, desired_order, reveal_index)
+    action == 1 ? move_bottom_to_top!(deck) : insert_revealed_card!(deck, desired_order[reveal_index])
   end
 
-  private_class_method :validate_inputs!
+  def move_bottom_to_top!(deck)
+    return if deck.empty?
+
+    deck.unshift(deck.pop)
+  end
+
+  def insert_revealed_card!(deck, card)
+    deck.unshift(card)
+  end
+
+  def validate_inputs!(pattern, desired_order)
+    validate_presence!(pattern, desired_order)
+    validate_desired_order!(desired_order)
+    validate_pattern_actions!(pattern)
+    validate_reveal_count!(pattern, desired_order)
+  end
+
+  def validate_presence!(pattern, desired_order)
+    raise ArgumentError, 'pattern must be provided' if pattern.nil?
+    raise ArgumentError, 'desired_order must be provided' if desired_order.nil?
+  end
+
+  def validate_desired_order!(desired_order)
+    return if desired_order.is_a?(Array) && desired_order.all?(String)
+
+    raise ArgumentError, 'desired_order must be an array of strings'
+  end
+
+  def validate_pattern_actions!(pattern)
+    invalid = pattern.reject { |a| a.zero? || a == 1 }
+    return if invalid.empty?
+
+    raise ArgumentError, "pattern contains invalid action(s): #{invalid.uniq.join(', ')}"
+  end
+
+  def validate_reveal_count!(pattern, desired_order)
+    expected = desired_order.length
+    actual = pattern.count(0)
+    return if actual == expected
+
+    raise ArgumentError,
+          "pattern must contain exactly #{expected} reveal actions (0), got #{actual}"
+  end
 end
