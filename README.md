@@ -34,9 +34,7 @@ For a single suit:
 Ace is treated as `1`.  
 Each card must be revealed **once and only once**.
 
----
-
-## Pattern Semantics
+### Pattern Semantics
 
 A pattern is a sequence of actions applied to the deck **from top to bottom**.
 
@@ -94,6 +92,29 @@ This produces a pattern such as:
 
 Despite the non-uniform pattern, the algorithm should still reconstruct
 the correct initial deck arrangement using reverse simulation.
+
+---
+
+## Running the Simulations
+
+The repository includes example scripts that demonstrate how different patterns
+affect the deck and how the reveal process unfolds step by step.
+
+Each example uses the forward simulator to visualize the pattern execution.
+
+### Prerequisites
+
+- Ruby 2.7 or newer
+- No external dependencies
+
+### Running an Example
+
+From the project root, run:
+
+```sh
+ruby examples/alternating_pattern.rb
+```
+
 ---
 
 ## Objective
